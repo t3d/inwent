@@ -1,0 +1,57 @@
+#!/bin/bash
+
+function pokaz_nazwy() {
+	linia=`tail -n $((ile_pozycji-$3)) < $2 | head -n 1`
+	ile_szukanego=`echo $linia | cut -f 2 -d '|'`
+
+	if [ $pozycja -ge 2 ]; then
+		towar_info $((pozycja-1)) $2
+	fi 
+	echo -e "Poz. ${pozycja}: BRAK TOWARU! - \t$ile_szukanego x $1"
+
+	pokaz_nastepny=1
+}
+
+function towar_info() {
+	echo -n "Poz. ${1}: "
+	linia=`tail -n $((ile_pozycji-$1+1)) < $2 | head -n 1`
+	ile=`echo $linia | cut -f 2 -d '|'`
+	kod=`echo $linia | cut -f 1 -d '|'`
+	if [ `chval 6 rq -fbar_kod_tow=${kod} | wc -l` -lt 1 ]; then
+		echo -e "BRAK TOWARU! - \t$ile x $kod"
+	else
+		nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 7 -d '|'`
+		echo -e "\t\t$ile $nazwa $kod"
+		if [ "$pokaz_nastepny" -gt 0 ]; then 
+			pokaz_nastepny=$(($pokaz_nastepny-1))
+			if [ "$pokaz_nastepny" -eq 0 ]; then 
+				echo
+			fi
+		fi
+	fi
+}
+
+if [ $# -ne 1 ]; then
+        echo "podaj nazwe pliku z backupem"
+        exit
+fi
+
+if [ -f $1 ]; then 
+	echo -e "Wczytuje plik $1 \n"
+else 
+	echo nie ma takiego pliku!
+	exit
+fi
+
+pozycja=0
+pokaz_nastepny=0
+ile_pozycji=`wc -l < $1`
+while read i; do
+	pozycja=$((pozycja+1))
+	n=`echo $i | cut -f 1 -d '|'` 
+	if [ "$pokaz_nastepny" -gt 0 ]; then 
+		towar_info $pozycja $1
+	elif [ `chval 6 rq -fbar_kod_tow=${n} | wc -l` -lt 1 ]; then
+		pokaz_nazwy $n $1 $pozycja 
+	fi
+done < $1
