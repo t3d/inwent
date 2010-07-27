@@ -1,0 +1,3 @@
+skrypt inwent służy do wyłapywania towarów nie znajdujących się w bazie magnata, a wprowadzonych do arkusza podczas inwentaryzacji.
+
+Jedynym parametrem potrzebnym do uruchomienia skryptu jest nazwa pliku z zawartością arkusza. Skrypt zapyta bazę o każdy towar znajdujący się w arkuszu i wypisze towary, których nie ma w bazie, wraz z towarami sąsiadującymi (z nazwami pobranymi z bazy). Tak sporządzona lista powinna znacznie ułatwić zidentyfikowanie towarów w sklepie.
