@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2010 Tomasz Długosz <tomek3d@gmail.com> 
+# distributed under the terms of the GNU General Public License v3
 
 function pokaz_nazwy() {
 	linia=`tail -n $((ile_pozycji-$3)) < $2 | head -n 1`
