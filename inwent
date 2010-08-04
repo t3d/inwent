@@ -19,18 +19,31 @@ function towar_info() {
 	linia=`tail -n $((ile_pozycji-$1+1)) < $2 | head -n 1`
 	ile=`echo $linia | cut -f 2 -d '|'`
 	kod=`echo $linia | cut -f 1 -d '|'`
-	if [ `chval 6 rq -fbar_kod_tow=${kod} | wc -l` -lt 1 ]; then
-		echo -e "BRAK TOWARU! - \t$ile x $kod"
-	else
-		nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 7 -d '|'`
-		echo -e "\t\t$ile $nazwa $kod"
-		if [ "$pokaz_nastepny" -gt 0 ]; then 
-			pokaz_nastepny=$(($pokaz_nastepny-1))
-			if [ "$pokaz_nastepny" -eq 0 ]; then 
-				echo
-			fi
-		fi
-	fi
+        nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 7 -d '|'`
+        if [ -n "$nazwa" ]; then
+                echo -e "\t\t$ile $nazwa $kod"
+                if [ "$pokaz_nastepny" -gt 0 ]; then 
+                        pokaz_nastepny=$(($pokaz_nastepny-1))
+                        if [ "$pokaz_nastepny" -eq 0 ]; then 
+                                echo
+                        fi
+                fi
+        else
+                id_tow=`chval 33 rq -fbar_kod_tow=${kod} | cut -f 3 -d '|'`
+                id_tow=`echo $id_tow | sed -e 's/^0*//'`
+                nazwa=`chval 6 rq -fid_tow=${id_tow} | cut -f 7 -d '|'`
+                if [ -n "$nazwa" ]; then
+                        echo -e "\t\t$ile $nazwa $kod"
+                        if [ "$pokaz_nastepny" -gt 0 ]; then 
+                                pokaz_nastepny=$(($pokaz_nastepny-1))
+                                if [ "$pokaz_nastepny" -eq 0 ]; then 
+                                        echo
+                                fi
+                        fi
+                else
+                        echo -e "BRAK TOWARU! - \t$ile x $kod"
+                fi
+        fi
 }
 
 if [ $# -ne 1 ]; then
