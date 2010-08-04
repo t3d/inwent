@@ -53,7 +53,7 @@ while read i; do
 	n=`echo $i | cut -f 1 -d '|'` 
 	if [ "$pokaz_nastepny" -gt 0 ]; then 
 		towar_info $pozycja $1
-	elif [ `chval 6 rq -fbar_kod_tow=${n} | wc -l` -lt 1 ]; then
+	elif [ `chval 6 rq -fbar_kod_tow=${n} | wc -l` -lt 1 ] && [ `chval 33 rq -fbar_kod_tow=${n} | wc -l` -lt 1 ]; then
 		pokaz_nazwy $n $1 $pozycja 
 	fi
 done < $1
