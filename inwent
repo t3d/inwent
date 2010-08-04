@@ -3,7 +3,7 @@
 # distributed under the terms of the GNU General Public License v3
 
 function pokaz_nazwy() {
-	linia=`tail -n $((ile_pozycji-$3)) < $2 | head -n 1`
+	linia=`tail -n $((ile_pozycji-$3+1)) < $2 | head -n 1`
 	ile_szukanego=`echo $linia | cut -f 2 -d '|'`
 
 	if [ $pozycja -ge 2 ]; then
