@@ -34,7 +34,7 @@ function towar_info() {
 	fi
 }
 
-function wypisz(){
+function wypisz_info(){
 	echo -e "\t\t$ile $nazwa $kod"
 	if [ "$pokaz_nastepny" -gt 0 ]; then 
 		pokaz_nastepny=$(($pokaz_nastepny-1))
