@@ -4,20 +4,20 @@
 
 function pokaz_nazwy() {
 	linia=`tail -n $((ile_pozycji-$3+1)) < $2 | head -n 1`
-	ile_szukanego=`echo $linia | cut -f 2 -d '|'`
+	ile_szukanego=`echo $linia | cut -f 2 -d '|' | sed -e 's/0*$//' -e 's/\.$//'`
 
 	if [ $pozycja -ge 2 ]; then
 		towar_info $((pozycja-1)) $2
 	fi 
-	echo -e "Poz. ${pozycja}: BRAK TOWARU! \t$ile_szukanego x $1"
+	echo -e "${pozycja}: BRAK TOWARU! \t${ile_szukanego}x $1"
 
 	pokaz_nastepny=1
 }
 
 function towar_info() {
-	echo -n "Poz. ${1}: "
+	echo -n "${1}: "
 	linia=`tail -n $((ile_pozycji-$1+1)) < $2 | head -n 1`
-	ile=`echo $linia | cut -f 2 -d '|'`
+	ile=`echo $linia | cut -f 2 -d '|' | sed -e 's/0*$//' -e 's/\.$//'`
 	kod=`echo $linia | cut -f 1 -d '|'`
 	nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 8 -d '|'`
 	if [ -n "$nazwa" ]; then
@@ -29,13 +29,13 @@ function towar_info() {
 		if [ -n "$nazwa" ]; then
 			wypisz_info
 		else
-			echo -e "BRAK TOWARU! \t$ile x $kod"
+			echo -e "BRAK TOWARU! \t${ile}x $kod"
 		fi
 	fi
 }
 
 function wypisz_info(){
-	echo -e "\t${ile}${nazwa}${kod}"
+	echo -e "\t${ile}x\t${nazwa}${kod}"
 	if [ "$pokaz_nastepny" -gt 0 ]; then 
 		pokaz_nastepny=$(($pokaz_nastepny-1))
 		if [ "$pokaz_nastepny" -eq 0 ]; then 
