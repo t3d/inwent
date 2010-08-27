@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright (c) 2010 Tomasz Dlugosz <tomek3d@gmail.com> 
+# distributed under the terms of the GNU General Public License v3
+
+inwent="./inwent"
+backup_path="/home/`whoami`/backup/"
+
+backup=`ls -t "$backup_path" | head -n 1`
+
+$inwent ${backup_path}/${backup} 
+
