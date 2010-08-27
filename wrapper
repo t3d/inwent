@@ -7,5 +7,5 @@ backup_path="/home/`whoami`/backup/"
 
 backup=`ls -t "$backup_path" | head -n 1`
 
-$inwent ${backup_path}/${backup} 
+$inwent ${backup_path}/${backup} | lpr
 
