@@ -19,15 +19,19 @@ function towar_info() {
 	linia=`tail -n $((ile_pozycji-$1+1)) < $2 | head -n 1`
 	ile=`echo $linia | cut -f 2 -d '|' | sed -e 's/0*$//' -e 's/\.$//'`
 	kod=`echo $linia | cut -f 1 -d '|'`
-	nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 8 -d '|'`
+	nazwa=`chval 6 rq -fbar_kod_tow=${kod} | cut -f 8 -d '|' | iconv -f 852`
 	if [ -n "$nazwa" ]; then
 		wypisz_info
 	else
 		id_tow=`chval 33 rq -fbar_kod_tow=${kod} | cut -f 3 -d '|'`
 		id_tow=`echo $id_tow | sed -e 's/^0*//'`
-		nazwa=`chval 6 rq -fid_tow=${id_tow} | cut -f 8 -d '|'`
-		if [ -n "$nazwa" ]; then
-			wypisz_info
+		if [ -n "$id_tow" ]; then
+			nazwa=`chval 6 rq -fid_tow=${id_tow} | cut -f 8 -d '|' | iconv -f 852`
+			if [ -n "$nazwa" ]; then
+				wypisz_info
+			else
+				echo -e "BRAK TOWARU! \t${ile}x $kod"
+			fi
 		else
 			echo -e "BRAK TOWARU! \t${ile}x $kod"
 		fi
